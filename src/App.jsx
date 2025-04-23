@@ -102,7 +102,7 @@ export default function SimuladorDeTaxas() {
           value={valor}
           onChange={handleValorChange}
           placeholder="R$ 100,00"
-          className="w-full p-3 border border-gray-300 rounded-xl mb-4 focus:ring-2 focus:ring-orange-500 text-black"
+          className="w-full p-3 border border-gray-300 rounded-xl mb-4 focus:ring-2 focus:ring-orange-500 text-black bg-white"
         />
 
         <label className="inline-flex items-center mb-6">
