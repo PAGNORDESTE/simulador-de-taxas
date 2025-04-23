@@ -77,7 +77,7 @@ export default function SimuladorDeTaxas() {
         <select
           value={bandeira}
           onChange={(e) => setBandeira(e.target.value)}
-          className="w-full p-3 border border-gray-300 rounded-xl mb-4 focus:ring-2 focus:ring-orange-500 text-black"
+          className="w-full p-3 border border-gray-300 rounded-xl mb-4 focus:ring-2 focus:ring-orange-500 text-black bg-white"
         >
           <option value="">Selecione</option>
           <option value="VISA E MASTER">VISA E MASTER</option>
@@ -88,7 +88,7 @@ export default function SimuladorDeTaxas() {
         <select
           value={parcelas}
           onChange={(e) => setParcelas(e.target.value)}
-          className="w-full p-3 border border-gray-300 rounded-xl mb-4 focus:ring-2 focus:ring-orange-500 text-black"
+          className="w-full p-3 border border-gray-300 rounded-xl mb-4 focus:ring-2 focus:ring-orange-500 text-black bg-white"
         >
           <option value="débito">Débito</option>
           {[...Array(18)].map((_, i) => (
