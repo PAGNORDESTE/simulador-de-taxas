@@ -1,55 +1,115 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { CreditCard, DollarSign, Moon, Sun, RefreshCcw } from "lucide-react";
 
 export default function SimuladorDeTaxas() {
   const [bandeira, setBandeira] = useState("");
+  useEffect(() => {
+  setResultado(null);
+}, [bandeira, valor, parcelas, repassar]);
   const [valor, setValor] = useState("");
+  useEffect(() => {
+  setResultado(null);
+}, [bandeira, valor, parcelas, repassar]);
   const [parcelas, setParcelas] = useState("1");
+  useEffect(() => {
+  setResultado(null);
+}, [bandeira, valor, parcelas, repassar]);
   const [repassar, setRepassar] = useState(false);
+  useEffect(() => {
+  setResultado(null);
+}, [bandeira, valor, parcelas, repassar]);
   const [resultado, setResultado] = useState(null);
+  useEffect(() => {
+  setResultado(null);
+}, [bandeira, valor, parcelas, repassar]);
   const [darkMode, setDarkMode] = useState(false);
+  useEffect(() => {
+  setResultado(null);
+}, [bandeira, valor, parcelas, repassar]);
 
   const taxas = {
     "VISA E MASTER": {
       débito: 1.39,
       parcelas: {
-        1: 2.91, 2: 4.56, 3: 5.31, 4: 6.06, 5: 6.79, 6: 7.53,
-        7: 8.30, 8: 9.01, 9: 9.72, 10: 10.42, 11: 11.11, 12: 11.80,
-        13: 12.48, 14: 13.15, 15: 13.82, 16: 14.47, 17: 15.13, 18: 15.77
+        1: 2.91, 2: 4.58, 3: 5.35, 4: 6.11, 5: 6.85, 6: 7.59,
+        7: 8.37, 8: 9.09, 9: 9.81, 10: 10.51, 11: 11.22, 12: 11.91,
+        13: 12.60, 14: 13.28, 15: 13.95, 16: 14.62, 17: 15.28, 18: 15.93
       }
     },
     "OUTRAS BANDEIRAS": {
       débito: 1.45,
       parcelas: {
-        1: 3.24, 2: 4.71, 3: 5.46, 4: 6.21, 5: 6.94, 6: 7.68,
-        7: 8.50, 8: 9.21, 9: 9.92, 10: 10.62, 11: 11.31, 12: 12.00,
-        13: 12.68, 14: 13.35, 15: 14.02, 16: 14.67, 17: 15.33, 18: 15.97
+        1: 3.24, 2: 4.73, 3: 5.50, 4: 6.26, 5: 7.00, 6: 7.74,
+        7: 8.57, 8: 9.29, 9: 10.01, 10: 10.71, 11: 11.42, 12: 12.11,
+        13: 12.80, 14: 13.48, 15: 14.15, 16: 14.82, 17: 15.48, 18: 16.13
       }
     }
   };
+const simular = () => {
+  if (!bandeira || !valor || !parcelas) {
+    return alert("Preencha todos os campos obrigatórios");
+  }
 
-  const simular = () => {
-    if (!bandeira || !valor || !parcelas) {
-      return alert("Preencha todos os campos obrigatórios");
-    }
+  const valorNum = parseFloat(
+    valor.replace("R$", "").replace(/\./g, '').replace(",", ".")
+  );
 
-    const valorNum = parseFloat(valor.replace("R$", "").replace(/\./g, '').replace(",", "."));
-
-    const taxaBase = parcelas === "débito"
+  const taxaBase =
+    parcelas === "débito"
       ? taxas[bandeira].débito
       : taxas[bandeira].parcelas[parcelas];
 
-    let valorFinal;
+  let valorFinal;
+  let mensagem;
 
-    if (repassar) {
-      valorFinal = valorNum / (1 - taxaBase / 100);
-      setResultado(`Para repassar a taxa, cobre R$ ${valorFinal.toFixed(2)} do cliente.`);
-    } else {
-      valorFinal = valorNum * (1 - taxaBase / 100);
-      setResultado(`Você irá receber R$ ${valorFinal.toFixed(2)} após a taxa.`);
-    }
-  };
+  if (repassar) {
+    valorFinal = valorNum / (1 - taxaBase / 100);
+    mensagem = `Para repassar a taxa, cobre R$ ${valorFinal.toFixed(2)} do cliente.`;
+  } else {
+    valorFinal = valorNum * (1 - taxaBase / 100);
+    mensagem = `Você irá receber R$ ${valorFinal.toFixed(2)} após a taxa.`;
+  }
+
+  // Garante atualização do resultado mesmo se o texto for igual
+  setResultado(""); // limpa primeiro
+  setTimeout(() => {
+    setResultado(mensagem);
+  }, 10);
+};
+
+  const simular = () => {
+  if (!bandeira || !valor || !parcelas) {
+    return alert("Preencha todos os campos obrigatórios");
+  }
+
+  const valorNum = parseFloat(
+    valor.replace("R$", "").replace(/\./g, '').replace(",", ".")
+  );
+
+  const taxaBase =
+    parcelas === "débito"
+      ? taxas[bandeira].débito
+      : taxas[bandeira].parcelas[parcelas];
+
+  let valorFinal;
+  let mensagem;
+
+  if (repassar) {
+    valorFinal = valorNum / (1 - taxaBase / 100);
+    mensagem = `Para repassar a taxa, cobre R$ ${valorFinal.toFixed(2)} do cliente.`;
+  } else {
+    valorFinal = valorNum * (1 - taxaBase / 100);
+    mensagem = `Você irá receber R$ ${valorFinal.toFixed(2)} após a taxa.`;
+  }
+
+  // Garante atualização do resultado mesmo se o texto for igual
+  setResultado(""); // limpa primeiro
+  setTimeout(() => {
+    setResultado(mensagem);
+  }, 10);
+};
+
 
   const handleValorChange = (e) => {
     const rawValue = e.target.value.replace(/[^\d]/g, "");
