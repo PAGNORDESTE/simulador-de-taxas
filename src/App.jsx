@@ -4,29 +4,16 @@ import { CreditCard, DollarSign, Moon, Sun, RefreshCcw } from "lucide-react";
 
 export default function SimuladorDeTaxas() {
   const [bandeira, setBandeira] = useState("");
-  useEffect(() => {
-  setResultado(null);
-}, [bandeira, valor, parcelas, repassar]);
   const [valor, setValor] = useState("");
-  useEffect(() => {
-  setResultado(null);
-}, [bandeira, valor, parcelas, repassar]);
   const [parcelas, setParcelas] = useState("1");
-  useEffect(() => {
-  setResultado(null);
-}, [bandeira, valor, parcelas, repassar]);
   const [repassar, setRepassar] = useState(false);
-  useEffect(() => {
-  setResultado(null);
-}, [bandeira, valor, parcelas, repassar]);
   const [resultado, setResultado] = useState(null);
-  useEffect(() => {
-  setResultado(null);
-}, [bandeira, valor, parcelas, repassar]);
   const [darkMode, setDarkMode] = useState(false);
+
+  // Limpa o resultado sempre que algum dado muda
   useEffect(() => {
-  setResultado(null);
-}, [bandeira, valor, parcelas, repassar]);
+    setResultado(null);
+  }, [bandeira, valor, parcelas, repassar]);
 
   const taxas = {
     "VISA E MASTER": {
@@ -46,70 +33,37 @@ export default function SimuladorDeTaxas() {
       }
     }
   };
-const simular = () => {
-  if (!bandeira || !valor || !parcelas) {
-    return alert("Preencha todos os campos obrigatórios");
-  }
-
-  const valorNum = parseFloat(
-    valor.replace("R$", "").replace(/\./g, '').replace(",", ".")
-  );
-
-  const taxaBase =
-    parcelas === "débito"
-      ? taxas[bandeira].débito
-      : taxas[bandeira].parcelas[parcelas];
-
-  let valorFinal;
-  let mensagem;
-
-  if (repassar) {
-    valorFinal = valorNum / (1 - taxaBase / 100);
-    mensagem = `Para repassar a taxa, cobre R$ ${valorFinal.toFixed(2)} do cliente.`;
-  } else {
-    valorFinal = valorNum * (1 - taxaBase / 100);
-    mensagem = `Você irá receber R$ ${valorFinal.toFixed(2)} após a taxa.`;
-  }
-
-  // Garante atualização do resultado mesmo se o texto for igual
-  setResultado(""); // limpa primeiro
-  setTimeout(() => {
-    setResultado(mensagem);
-  }, 10);
-};
 
   const simular = () => {
-  if (!bandeira || !valor || !parcelas) {
-    return alert("Preencha todos os campos obrigatórios");
-  }
+    if (!bandeira || !valor || !parcelas) {
+      return alert("Preencha todos os campos obrigatórios");
+    }
 
-  const valorNum = parseFloat(
-    valor.replace("R$", "").replace(/\./g, '').replace(",", ".")
-  );
+    const valorNum = parseFloat(
+      valor.replace("R$", "").replace(/\./g, '').replace(",", ".")
+    );
 
-  const taxaBase =
-    parcelas === "débito"
-      ? taxas[bandeira].débito
-      : taxas[bandeira].parcelas[parcelas];
+    const taxaBase =
+      parcelas === "débito"
+        ? taxas[bandeira].débito
+        : taxas[bandeira].parcelas[parcelas];
 
-  let valorFinal;
-  let mensagem;
+    let valorFinal;
+    let mensagem;
 
-  if (repassar) {
-    valorFinal = valorNum / (1 - taxaBase / 100);
-    mensagem = `Para repassar a taxa, cobre R$ ${valorFinal.toFixed(2)} do cliente.`;
-  } else {
-    valorFinal = valorNum * (1 - taxaBase / 100);
-    mensagem = `Você irá receber R$ ${valorFinal.toFixed(2)} após a taxa.`;
-  }
+    if (repassar) {
+      valorFinal = valorNum / (1 - taxaBase / 100);
+      mensagem = `Para repassar a taxa, cobre R$ ${valorFinal.toFixed(2)} do cliente.`;
+    } else {
+      valorFinal = valorNum * (1 - taxaBase / 100);
+      mensagem = `Você irá receber R$ ${valorFinal.toFixed(2)} após a taxa.`;
+    }
 
-  // Garante atualização do resultado mesmo se o texto for igual
-  setResultado(""); // limpa primeiro
-  setTimeout(() => {
-    setResultado(mensagem);
-  }, 10);
-};
-
+    setResultado(""); // limpa primeiro
+    setTimeout(() => {
+      setResultado(mensagem);
+    }, 10);
+  };
 
   const handleValorChange = (e) => {
     const rawValue = e.target.value.replace(/[^\d]/g, "");
@@ -152,7 +106,7 @@ const simular = () => {
         >
           <option value="débito">Débito</option>
           {[...Array(18)].map((_, i) => (
-            <option key={i+1} value={i+1}>{i + 1}x</option>
+            <option key={i + 1} value={i + 1}>{i + 1}x</option>
           ))}
         </select>
 
@@ -197,4 +151,3 @@ const simular = () => {
     </div>
   );
 }
-
