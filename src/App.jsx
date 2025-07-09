@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { CreditCard, DollarSign, Moon, Sun, RefreshCcw } from "lucide-react";
+import logo from "./assets/logo.png"; // <-- Importa a logo
 
 export default function SimuladorDeTaxas() {
   const [bandeira, setBandeira] = useState("");
@@ -10,9 +11,8 @@ export default function SimuladorDeTaxas() {
   const [resultado, setResultado] = useState(null);
   const [darkMode, setDarkMode] = useState(false);
 
-  // Limpa o resultado sempre que algum dado muda
   useEffect(() => {
-    setResultado(null);
+    setResultado(null); // limpa resultado ao alterar inputs
   }, [bandeira, valor, parcelas, repassar]);
 
   const taxas = {
@@ -39,14 +39,8 @@ export default function SimuladorDeTaxas() {
       return alert("Preencha todos os campos obrigatórios");
     }
 
-    const valorNum = parseFloat(
-      valor.replace("R$", "").replace(/\./g, '').replace(",", ".")
-    );
-
-    const taxaBase =
-      parcelas === "débito"
-        ? taxas[bandeira].débito
-        : taxas[bandeira].parcelas[parcelas];
+    const valorNum = parseFloat(valor.replace("R$", "").replace(/\./g, "").replace(",", "."));
+    const taxaBase = parcelas === "débito" ? taxas[bandeira].débito : taxas[bandeira].parcelas[parcelas];
 
     let valorFinal;
     let mensagem;
@@ -59,22 +53,26 @@ export default function SimuladorDeTaxas() {
       mensagem = `Você irá receber R$ ${valorFinal.toFixed(2)} após a taxa.`;
     }
 
-    setResultado(""); // limpa primeiro
-    setTimeout(() => {
-      setResultado(mensagem);
-    }, 10);
+    setResultado(""); // força atualização
+    setTimeout(() => setResultado(mensagem), 10);
   };
 
   const handleValorChange = (e) => {
     const rawValue = e.target.value.replace(/[^\d]/g, "");
     const floatValue = (parseInt(rawValue, 10) / 100).toFixed(2);
-    const formattedValue = `R$ ${floatValue.replace('.', ',')}`;
+    const formattedValue = `R$ ${floatValue.replace(".", ",")}`;
     setValor(formattedValue);
   };
 
   return (
     <div className={`${darkMode ? "bg-gray-900 text-white" : "bg-white text-gray-900"} min-h-screen py-10`}>
       <div className="max-w-md mx-auto p-6 shadow-2xl rounded-2xl border border-gray-100 bg-opacity-30">
+
+        {/* Logo centralizada */}
+        <div className="flex justify-center mb-4">
+          <img src={logo} alt="Logo Pagnordeste" className="h-16" />
+        </div>
+
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-bold text-orange-600 flex items-center gap-2">
             <CreditCard className="text-orange-400" /> Simulador de Taxas
@@ -151,3 +149,4 @@ export default function SimuladorDeTaxas() {
     </div>
   );
 }
+
